@@ -24,3 +24,7 @@ pytest-cov = "*"
 
 [pipenv]
 allow_prereleases = true
+
+[scripts]
+coverage = "pipenv run pytest --cov --cov-report=html"
+

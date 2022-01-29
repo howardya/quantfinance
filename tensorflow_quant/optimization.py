@@ -1,8 +1,9 @@
 import functools
+
+import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
 import tf_quant_finance as tff
-import numpy as np
 
 tf.config.run_functions_eagerly(True)
 
@@ -22,7 +23,9 @@ def unconstrained_minimize(objective_fn, algorithm="lbfgs", **kwargs):
     elif algorithm == "conjugate_gradient":
         minimize = tff.math.optimizer.conjugate_gradient_minimize
     else:
-        raise Exception(f"Algorithm: {algorithm} incompatible")
+        raise ValueError(
+            f"Algorithm specified {algorithm} is not one of (lbfgs, bfgs, conjugate_gradient)."
+        )
 
     try:
         results = minimize(val_and_grad, **kwargs)
@@ -47,7 +50,7 @@ def constrained_minimize(
     **kwargs,
 ):
     if initial_position is None:
-        raise Exception("initial_position must be provided.")
+        raise ValueError("initial-position must be provided")
 
     if relu_scalar is None:
         # find reasonable maximum for lagrangian

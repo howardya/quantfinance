@@ -1,11 +1,35 @@
-import tensorflow as tf
 import numpy as np
+import pytest
+import tensorflow as tf
 
-from tensorflow_quant.optimization import unconstrained_minimize, constrained_minimize
+from tensorflow_quant.optimization import constrained_minimize, unconstrained_minimize
 
 tf.config.run_functions_eagerly(True)
 
-# unconstrained optimizer
+
+def test_unspecified_algorithm():
+    def value_fn(x):
+        return tf.reduce_sum((x - 0.87) ** 2)
+
+    with pytest.raises(ValueError):
+        unconstrained_minimize(
+            objective_fn=value_fn,
+            initial_position=tf.constant([1.0]),
+            algorithm="random",
+        )
+
+
+def test_minimization_exception_no_initial_position():
+    def value_fn(x):
+        return tf.reduce_sum((x - 0.87) ** 2)
+
+    with pytest.raises(TypeError):
+        unconstrained_minimize(
+            objective_fn=value_fn,
+            algorithm="lbfgs",
+        )
+
+
 def test_single_quadratic_lbfgs():
     def value_fn(x):
         return tf.reduce_sum((x - 0.87) ** 2)
@@ -71,6 +95,41 @@ def test_multiple_quadratic():
 
 
 # constrained optimization
+def test_without_initial_position():
+    def value_fn(x):
+        return tf.reduce_sum((x - 0.87) ** 2)
+
+    def constraint_fn_1(x):
+        # x >= 0 ( -x<=0)
+        return -tf.reduce_sum(x, axis=-1)
+
+    with pytest.raises(ValueError):
+        constrained_minimize(
+            objective_fn=value_fn,
+            constrained_fns=[constraint_fn_1],
+            relu_scalar=1000,
+            algorithm="lbfgs",
+        )
+
+
+def test_wrong_algorithm():
+    def value_fn(x):
+        return tf.reduce_sum((x - 0.87) ** 2)
+
+    def constraint_fn_1(x):
+        # x >= 0 ( -x<=0)
+        return -tf.reduce_sum(x, axis=-1)
+
+    with pytest.raises(ValueError):
+        constrained_minimize(
+            objective_fn=value_fn,
+            constrained_fns=[constraint_fn_1],
+            initial_position=tf.constant([1.0]),
+            relu_scalar=1000,
+            algorithm="random",
+        )
+
+
 def test_single_quadratic_single_constraint():
     def value_fn(x):
         return tf.reduce_sum((x - 0.87) ** 2)
