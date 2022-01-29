@@ -12,6 +12,7 @@ tensorflow-probability = "*"
 sklearn = "*"
 arch = "*"
 tf-quant-finance = "*"
+tqdm = "*"
 
 [dev-packages]
 black = "==20.8b1"
@@ -27,4 +28,3 @@ allow_prereleases = true
 
 [scripts]
 coverage = "pipenv run pytest --cov --cov-report=html"
-
