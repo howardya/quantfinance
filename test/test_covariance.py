@@ -1,3 +1,4 @@
+import pytest
 import tensorflow as tf
 import tensorflow_probability as tfp
 
@@ -130,7 +131,25 @@ def test_fit_forecast_ccc_garch():
     assert abs(covariance.numpy()[1, 1] - 1.0) < 0.1
 
 
-def test_empirical_covariance():
+def test_covariance_with_one_dimentional_data():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=1,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    with pytest.raises(ValueError):
+        get_covariance(data, return_correlation=True)
+
+
+def test_covariance_empirical():
     (
         data,
         covariance_true,
@@ -145,6 +164,182 @@ def test_empirical_covariance():
     )
 
     covariance, correlation = get_covariance(data, return_correlation=True)
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_covariance_empirical_without_correlation():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance = get_covariance(data, return_correlation=False)
+
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_graphical_lasso():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="graphical_lasso",
+        return_correlation=True,
+    )
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_ledoit_wolf():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="ledoit_wolf",
+        return_correlation=True,
+    )
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_shrunk_covariance():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="shrunk_covariance",
+        return_correlation=True,
+    )
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_oas():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="oas",
+        return_correlation=True,
+    )
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_dcc_garch():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="dcc-garch",
+        return_correlation=True,
+    )
+
+    assert abs(correlation[0, 0] - 1.0) < 0.1
+    assert abs(correlation[1, 1] - 1.0) < 0.1
+    assert abs(covariance[0, 0] - 1.0) < 0.1
+    assert abs(covariance[1, 1] - 1.0) < 0.1
+
+
+def test_get_covariance_ccc_garch():
+    (
+        data,
+        covariance_true,
+        correlation_true,
+        eigenvalues_true,
+        eigenvectors_true,
+    ) = generate_multivariate_data(
+        n_samples=1500,
+        data_dim=2,
+        correlated=False,
+        unit_volatilities=True,
+    )
+
+    covariance, correlation = get_covariance(
+        data,
+        method="ccc-garch",
+        return_correlation=True,
+    )
 
     assert abs(correlation[0, 0] - 1.0) < 0.1
     assert abs(correlation[1, 1] - 1.0) < 0.1

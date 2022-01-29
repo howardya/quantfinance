@@ -1,4 +1,4 @@
-import sklearn as sk
+import sklearn.covariance as sk_covariance
 import tensorflow as tf
 import tensorflow_probability as tfp
 from arch.univariate import arch_model
@@ -185,26 +185,29 @@ def fit_forecast_ccc_garch(data):
 
 def get_covariance(data, method="empirical", return_correlation=False, **kwargs):
     if data.shape[1] == 1:
-        exit("Data is 1 dimensional.")
+        raise ValueError(
+            "Data passed to function get_covariance has only 1 dimension. Unable to calculate covariance."
+        )
 
     if method == "empirical":
         covariance = tfp.stats.covariance(data, **kwargs)
     elif method == "graphical_lasso":
-        covariance, _ = sk.covariance.graphical_lasso(
-            tfp.stats.covariance(data).numpy(), **kwargs
+        alpha = kwargs.get("alpha", 3.0)
+        covariance, _ = sk_covariance.graphical_lasso(
+            tfp.stats.covariance(data).numpy(), alpha=alpha
         )
         covariance = tf.convert_to_tensor(covariance)
     elif method == "ledoit_wolf":
-        covariance, _ = sk.covariance.ledoit_wolf(data, **kwargs)
-        covariance = tf.convert_to_tensor(covariance)
+        covariance, _ = sk_covariance.ledoit_wolf(data, **kwargs)
+        covariance = tf.convert_to_tensor(covariance, dtype=tf.float32)
     elif method == "shrunk_covariance":
-        covariance, _ = sk.covariance.shrunk_covariance(
+        covariance = sk_covariance.shrunk_covariance(
             tfp.stats.covariance(data).numpy(), **kwargs
         )
-        covariance = tf.convert_to_tensor(covariance)
+        covariance = tf.convert_to_tensor(covariance, dtype=tf.float32)
     elif method == "oas":
-        covariance, _ = sk.covariance.oas(data, **kwargs)
-        covariance = tf.convert_to_tensor(covariance)
+        covariance, _ = sk_covariance.oas(data, **kwargs)
+        covariance = tf.convert_to_tensor(covariance, dtype=tf.float32)
     elif method == "dcc-garch":
         covariance = fit_forecast_dcc_garch(data, **kwargs)
     elif method == "ccc-garch":
