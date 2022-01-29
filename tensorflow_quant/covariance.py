@@ -1,19 +1,14 @@
-import numpy as np
 import sklearn as sk
 import tensorflow as tf
 import tensorflow_probability as tfp
 from arch.univariate import arch_model
 
-tf.config.experimental_run_functions_eagerly(True)
+tf.config.run_functions_eagerly(True)
 
-__ALL__ = [
-    "get_covariance",
-]
+__ALL__ = ["get_covariance"]
 
 
-def dcc_garch_loss_fn_generator(
-    data_std_resid, a_variable, b_variable, ab_scalar_variable
-):
+def dcc_garch_loss_fn_generator(data_std_resid, a_variable, ab_scalar_variable):
     # https://github.com/Topaceminem/DCC-GARCH/blob/master/examples/dcc_garch_modeling.ipynb
     n_samples = data_std_resid.shape[0]
     data_dim = data_std_resid.shape[1]
@@ -26,6 +21,7 @@ def dcc_garch_loss_fn_generator(
     average_correlation = tf.reduce_mean(data_batch_correlation, axis=0)
 
     def dcc_garch_loss_fn():
+        b_variable = 1.0 - a_variable
         a_variable_scaled = ab_scalar_variable * a_variable
         b_variable_scaled = ab_scalar_variable * b_variable
         loss = 0
@@ -105,14 +101,12 @@ def fit_forecast_dcc_garch(data, **kwargs):
 
     a_variable = tfp.util.TransformedVariable(0.2, bijector=tfp.bijectors.Sigmoid())
 
-    b_variable = tfp.util.TransformedVariable(0.7, bijector=tfp.bijectors.Sigmoid())
-
     ab_scalar_variable = tfp.util.TransformedVariable(
         0.5, bijector=tfp.bijectors.Sigmoid()
     )
 
     gcc_garch_loss_fn = dcc_garch_loss_fn_generator(
-        data_std_resid, a_variable, b_variable, ab_scalar_variable
+        data_std_resid, a_variable, ab_scalar_variable
     )
 
     if optimizer is None:
@@ -128,7 +122,7 @@ def fit_forecast_dcc_garch(data, **kwargs):
         loss_fn=gcc_garch_loss_fn,
         num_steps=1000,
         trace_fn=trace_fn,
-        trainable_variables=[a_variable, b_variable, ab_scalar_variable],
+        trainable_variables=[a_variable, ab_scalar_variable],
         convergence_criterion=tfp.optimizer.convergence_criteria.LossNotDecreasing(
             rtol=0.01, min_num_steps=100, name=None
         ),
@@ -144,6 +138,7 @@ def fit_forecast_dcc_garch(data, **kwargs):
     average_correlation = tf.reduce_mean(data_batch_correlation, axis=0)
 
     a_variable_scaled = ab_scalar_variable * a_variable
+    b_variable = 1.0 - a_variable
     b_variable_scaled = ab_scalar_variable * b_variable
 
     correlation_now = average_correlation
@@ -159,7 +154,7 @@ def fit_forecast_dcc_garch(data, **kwargs):
         correlation_new = inv_vol_scalar @ correlation_new @ inv_vol_scalar
         correlation_now = correlation_new
 
-    vol_diagonal = tf.convert_to_tensor(np.diag(np.sqrt(forecast_variance)))
+    vol_diagonal = tf.cast(tf.linalg.diag(tf.sqrt(forecast_variance)), dtype=tf.float32)
 
     covariance = vol_diagonal @ correlation_now @ vol_diagonal
 
@@ -181,7 +176,7 @@ def fit_forecast_ccc_garch(data):
     )
     correlation = inv_vol_scalar @ correlation @ inv_vol_scalar
 
-    vol_diagonal = tf.convert_to_tensor(np.diag(np.sqrt(forecast_variance)))
+    vol_diagonal = tf.cast(tf.linalg.diag(tf.sqrt(forecast_variance)), dtype=tf.float32)
 
     covariance = vol_diagonal @ correlation @ vol_diagonal
 
@@ -189,8 +184,10 @@ def fit_forecast_ccc_garch(data):
 
 
 def get_covariance(data, method="empirical", return_correlation=False, **kwargs):
+    if data.shape[1] == 1:
+        exit("Data is 1 dimensional.")
+
     if method == "empirical":
-        print("a")
         covariance = tfp.stats.covariance(data, **kwargs)
     elif method == "graphical_lasso":
         covariance, _ = sk.covariance.graphical_lasso(
