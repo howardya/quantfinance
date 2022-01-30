@@ -13,6 +13,8 @@ sklearn = "*"
 arch = "*"
 tf-quant-finance = "*"
 tqdm = "*"
+python-dotenv = "*"
+pandas-datareader = "*"
 
 [dev-packages]
 black = "==20.8b1"
