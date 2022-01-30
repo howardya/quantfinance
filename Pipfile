@@ -24,6 +24,7 @@ mypy = "*"
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
+ipykernel = "*"
 
 [pipenv]
 allow_prereleases = true
