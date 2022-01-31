@@ -3,10 +3,10 @@ from tensorflow_quant.data import get_stocks_prices_yahoo
 
 def test_get_stocks_prices_yahoo_daily():
     prices = get_stocks_prices_yahoo(
-        "AAPL", frequency="daily", start="2020-01-02", end=None
+        "AAPL", frequency="daily", start="2020-01-02", end="2020-01-30"
     )
 
-    assert prices.shape[0] == 524
+    assert prices.shape[0] == 20
 
 
 def test_get_stocks_prices_yahoo_weekly():
