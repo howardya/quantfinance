@@ -19,7 +19,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "tensorflow_quant"},
-    packages=setuptools.find_packages(where="tensorflow_quant"),
+    packages=setuptools.find_packages(),
     python_requires=">=3.6",
 )
