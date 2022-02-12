@@ -17,4 +17,4 @@ def test_tiny_cta():
 
     backtest_profit = tiny_cta_backtest(df_prices)
 
-    assert backtest_profit.shape[0] == 254
+    assert backtest_profit.shape[0] == 50
