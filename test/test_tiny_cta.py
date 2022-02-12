@@ -11,6 +11,10 @@ def test_tiny_cta():
         end="2020-12-31",
     )
 
+    df_prices = df_prices.iloc[
+        :50,
+    ]
+
     backtest_profit = tiny_cta_backtest(df_prices)
 
     assert backtest_profit.shape[0] == 254
