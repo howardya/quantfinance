@@ -19,6 +19,7 @@ Quantitative (Finance and Math) tool writen in python and tensorflow.
    1. Cross Sectional Momentum with Learn-To-Rank algorithm
    2. Tiny CTA
 6. Gaussian Process Latent Variable Model
+7. Constrained PCA (Positive Weights)
 
 ## TODO
 1. learn_to_rank_LSTM
