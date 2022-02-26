@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d62363a7052010d9a370ecc3db8de6617f48cff3890a509c28096354cf7f7b24"
+            "sha256": "61003bec29d1d8eb85ee935c250e1585e2c6c8cfa6de456fec80653f4cc373f5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -823,10 +823,6 @@
             ],
             "index": "pypi",
             "version": "==0.0.1.dev30"
-        },
-        "tfco-nightly": {
-            "git": "https://github.com/google-research/tensorflow_constrained_optimization",
-            "ref": "723d63f8567aaa988c4ce4761152beee2b462e1d"
         },
         "threadpoolctl": {
             "hashes": [

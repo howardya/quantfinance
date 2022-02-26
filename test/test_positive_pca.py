@@ -22,7 +22,7 @@ def test_positive_pca():
     assert positive_pca_components.shape[1] == 2
 
 
-def test_positive_pca():
+def test_positive_pca_large_components():
     prices = get_stocks_prices_yahoo(
         ["VTI", "AGG", "DBC", "^VIX"],
         frequency="daily",

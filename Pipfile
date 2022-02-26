@@ -17,7 +17,6 @@ python-dotenv = "*"
 pandas-datareader = "*"
 tensorflow-recommenders = "*"
 tensorflow-ranking = "*"
-tfco-nightly = {git = "https://github.com/google-research/tensorflow_constrained_optimization"}
 
 [dev-packages]
 black = "==20.8b1"
