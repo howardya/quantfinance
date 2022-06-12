@@ -20,6 +20,7 @@ Quantitative (Finance and Math) tool writen in python and tensorflow.
    2. Tiny CTA
 6. Gaussian Process Latent Variable Model
 7. Constrained PCA (Positive Weights)
+8. Independent Components (ICA)
 
 ## TODO
 1. learn_to_rank_LSTM
