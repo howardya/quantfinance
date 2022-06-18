@@ -1,4 +1,4 @@
-from tensorflow_quant.tensorflow_quant import fib
+from quantfinance.tensorflow_quant import fib
 
 
 def test_fib() -> None:

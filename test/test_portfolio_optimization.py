@@ -1,7 +1,7 @@
 import tensorflow as tf
 
-from tensorflow_quant.data import get_stocks_prices_yahoo
-from tensorflow_quant.portfolio_optimization import (
+from quantfinance.data import get_stocks_prices_yahoo
+from quantfinance.portfolio_optimization import (
     max_ex_ante_sharpe_ratio,
     max_ex_post_sharpe_ratio,
     sharpe_loss_generator,

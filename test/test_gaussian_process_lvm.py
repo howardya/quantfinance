@@ -2,7 +2,7 @@ from test.test_covariance import generate_multivariate_data
 
 import tensorflow as tf
 
-from tensorflow_quant.gaussian_process_lvm import gaussian_process_lvm
+from quantfinance.gaussian_process_lvm import gaussian_process_lvm
 
 
 def test_gaussian_process_lvm_MLE_rbf():

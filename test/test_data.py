@@ -1,4 +1,4 @@
-from tensorflow_quant.data import get_stocks_prices_yahoo
+from quantfinance.data import get_stocks_prices_yahoo
 
 
 def test_get_stocks_prices_yahoo_daily():

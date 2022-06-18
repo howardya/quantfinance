@@ -3,7 +3,7 @@ from test.test_covariance import generate_multivariate_data
 import numpy as np
 import tensorflow as tf
 
-from tensorflow_quant.probabilistic_pca import probabilistic_pca
+from quantfinance.probabilistic_pca import probabilistic_pca
 
 
 def test_data_dim_4_components_2_without_constraint():

@@ -1,6 +1,6 @@
 import sys
 
-from tensorflow_quant.tensorflow_quant import fib
+from quantfinance.tensorflow_quant import fib
 
 if __name__ == "__main__":
     n = int(sys.argv[1])

@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
 
-from tensorflow_quant.univariate_gmm_constraints import univariate_gmm_constraints
+from quantfinance.univariate_gmm_constraints import univariate_gmm_constraints
 
 
 def generate_data(n_mixtures, n_samples=200, mean_spread=3, volatility=1, means=None):

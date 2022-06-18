@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 import tensorflow as tf
 
-from tensorflow_quant.optimization import constrained_minimize, unconstrained_minimize
+from quantfinance.optimization import constrained_minimize, unconstrained_minimize
 
 tf.config.run_functions_eagerly(True)
 

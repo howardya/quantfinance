@@ -17,6 +17,10 @@ python-dotenv = "*"
 pandas-datareader = "*"
 tensorflow-recommenders = "*"
 tensorflow-ranking = "*"
+pandas-ta = "*"
+yfinance = "*"
+investpy = "*"
+matplotlib = "*"
 
 [dev-packages]
 black = "==20.8b1"

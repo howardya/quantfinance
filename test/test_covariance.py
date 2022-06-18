@@ -2,7 +2,7 @@ import pytest
 import tensorflow as tf
 import tensorflow_probability as tfp
 
-from tensorflow_quant.covariance import (
+from quantfinance.covariance import (
     dcc_garch_loss_fn_generator,
     fit_forecast_ccc_garch,
     fit_forecast_dcc_garch,

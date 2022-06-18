@@ -2,8 +2,8 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_ranking as tfr
 
-from tensorflow_quant.data import get_stocks_prices_yahoo
-from tensorflow_quant.strategies import (
+from quantfinance.data import get_stocks_prices_yahoo
+from quantfinance.strategies import (
     convert_returns_to_features,
     learn_to_rank_stocks_CNN,
     learn_to_rank_stocks_NN,

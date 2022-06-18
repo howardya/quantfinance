@@ -1,5 +1,5 @@
-from tensorflow_quant.data import get_stocks_prices_yahoo
-from tensorflow_quant.positive_pca import positive_pca
+from quantfinance.data import get_stocks_prices_yahoo
+from quantfinance.positive_pca import positive_pca
 
 
 def test_positive_pca():

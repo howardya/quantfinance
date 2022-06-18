@@ -1,6 +1,6 @@
-from tensorflow_quant.data import get_stocks_prices_yahoo
-from tensorflow_quant.library import DOW_30_TICKER
-from tensorflow_quant.strategies import tiny_cta_backtest
+from quantfinance.data import get_stocks_prices_yahoo
+from quantfinance.library import DOW_30_TICKER
+from quantfinance.strategies import tiny_cta_backtest
 
 
 def test_tiny_cta():

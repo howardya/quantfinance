@@ -1,5 +1,5 @@
-from tensorflow_quant.data import get_stocks_prices_yahoo
-from tensorflow_quant.portfolio_ica import portfolio_ica
+from quantfinance.data import get_stocks_prices_yahoo
+from quantfinance.portfolio_ica import portfolio_ica
 
 
 def test_portfolio_ica():
