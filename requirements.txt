@@ -1,0 +1,17 @@
+pandas
+investpy
+numpy
+tensorflow
+pandas_datareader
+yfinance
+pandas_ta
+tensorflow_probability
+sklearn
+arch
+tf_quant_finance
+scipy
+tqdm
+tensorflow_ranking
+jupyterlab
+matplotlib
+seaborn

@@ -74,7 +74,7 @@ def test_learn_to_rank_stocks_actual_data():
 
 def test_learn_to_rank_stocks_CNN():
     prices = get_stocks_prices_yahoo(
-        ["VTI", "AGG", "DBC", "^VIX"],
+        symbols=["VTI", "AGG", "DBC", "^VIX"],
         frequency="daily",
         start="2002-07-31",
         end="2020-12-31",
